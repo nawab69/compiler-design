@@ -21,6 +21,8 @@ This repository contains various examples of lexical analyzers (using Lex/Flex) 
     - [variable - Recognizing Valid Variables](#variable---recognizing-valid-variables)
     - [expression - Recognizing Arithmetic Expressions](#expression---recognizing-arithmetic-expressions)
     - [anbn - Recognizing Strings in a^n b^n Grammar](#anbn---recognizing-strings-in-an-bn-grammar)
+    - [anbplusmcm - Recognizing Strings in a^n b^(n+m) c^m Grammar](#anbplusmcm---recognizing-strings-in-an-bnm-cm-grammar)
+    - [comment\_counter - Counting and Removing C Program Comments](#comment_counter---counting-and-removing-c-program-comments)
     - [verb - Identifying "To Be" Verbs](#verb---identifying-to-be-verbs)
     - [hello-world - Simple Hello World Example](#hello-world---simple-hello-world-example)
     - [lexical-analyser - Various Lexical Pattern Recognition](#lexical-analyser---various-lexical-pattern-recognition)
@@ -542,6 +544,105 @@ Valid string: Matches a^n b^n grammar (n > 0)
 Error: syntax error
 Invalid string: Does not match a^n b^n grammar
 Valid string: Matches a^n b^n grammar (n > 0)
+```
+
+### anbplusmcm - Recognizing Strings in a^n b^(n+m) c^m Grammar
+
+This program recognizes strings that follow the a^n b^(n+m) c^m grammar where n,m >= 0 (strings where all 'a's are followed by all 'b's, followed by all 'c's, with specific quantity relationships).
+
+**Files:**
+
+- `anbplusmcm.l` - Lexical analyzer for tokenizing input strings
+- `anbplusmcm.y` - Parser for recognizing strings in the a^n b^(n+m) c^m grammar
+
+**Compile:**
+
+```bash
+cd anbplusmcm
+yacc -d anbplusmcm.y
+flex anbplusmcm.l
+gcc -o anbplusmcm lex.yy.c y.tab.c -ll
+```
+
+**Run:**
+
+```bash
+./anbplusmcm
+```
+
+**Test Cases:**
+
+```
+
+ab
+bc
+abc
+aabbc
+abbcc
+aaabbbccc
+cba
+abba
+abbccc
+```
+
+**Expected Output:**
+
+```
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+Error: syntax error
+Invalid string: Does not match a^n b^(n+m) c^m grammar
+Error: syntax error
+Invalid string: Does not match a^n b^(n+m) c^m grammar
+Valid string: Matches a^n b^(n+m) c^m grammar (n,m >= 0)
+```
+
+### comment_counter - Counting and Removing C Program Comments
+
+This program counts the number of comment lines in a C program and produces a clean version of the program with all comments removed.
+
+**Files:**
+
+- `comment_counter.l` - Lexical analyzer for counting and removing C program comments
+- `test.c` - A sample C program with comments for testing
+
+**Compile:**
+
+```bash
+cd comment_counter
+flex comment_counter.l
+gcc -o comment_counter lex.yy.c -ll
+```
+
+**Run:**
+
+```bash
+./comment_counter input_file.c output_file.c
+```
+
+**Test Cases:**
+Using the provided `test.c` file which contains:
+
+- Single-line comments (using //)
+- Multi-line comments (using /\* \*/)
+- Inline comments
+- Nested comments
+
+**Expected Output:**
+
+- Terminal output showing the total number of comment lines found
+- A new file (specified as the second argument) containing the program without any comments
+
+**Example:**
+
+```
+$ ./comment_counter test.c output.c
+Total comment lines: 12
+Program without comments copied to output.c
 ```
 
 ### verb - Identifying "To Be" Verbs

@@ -22,7 +22,9 @@ This repository contains various examples of lexical analyzers (using Lex/Flex) 
     - [expression - Recognizing Arithmetic Expressions](#expression---recognizing-arithmetic-expressions)
     - [anbn - Recognizing Strings in a^n b^n Grammar](#anbn---recognizing-strings-in-an-bn-grammar)
     - [anbplusmcm - Recognizing Strings in a^n b^(n+m) c^m Grammar](#anbplusmcm---recognizing-strings-in-an-bnm-cm-grammar)
-    - [comment\_counter - Counting and Removing C Program Comments](#comment_counter---counting-and-removing-c-program-comments)
+    - [comment_counter - Counting and Removing C Program Comments](#comment_counter---counting-and-removing-c-program-comments)
+    - [token_counter - Counting Identifiers, Keywords, and Operators](#token_counter---counting-identifiers-keywords-and-operators)
+    - [nested_for - Recognizing Nested FOR Loops](#nested_for---recognizing-nested-for-loops)
     - [verb - Identifying "To Be" Verbs](#verb---identifying-to-be-verbs)
     - [hello-world - Simple Hello World Example](#hello-world---simple-hello-world-example)
     - [lexical-analyser - Various Lexical Pattern Recognition](#lexical-analyser---various-lexical-pattern-recognition)
@@ -644,6 +646,112 @@ $ ./comment_counter test.c output.c
 Total comment lines: 12
 Program without comments copied to output.c
 ```
+
+### token_counter - Counting Identifiers, Keywords, and Operators
+
+This program analyzes a C source file to identify and count the number of identifiers, keywords, and operators.
+
+**Files:**
+
+- `token_counter.l` - Lexical analyzer for identifying and counting tokens in C source files
+- `sample.c` - A sample C program for testing
+
+**Compile:**
+
+```bash
+cd token_counter
+flex token_counter.l
+gcc -o token_counter lex.yy.c -ll
+```
+
+**Run:**
+
+```bash
+./token_counter input_file.c
+```
+
+**Test Cases:**
+Using the provided `sample.c` file which contains:
+
+- Various C keywords (int, float, for, if, else, return)
+- Arithmetic and relational operators (+, -, =, >, <=, etc.)
+- Identifiers (variable names, function names)
+- Comments (both single-line and multi-line)
+
+**Expected Output:**
+
+```
+Analyzing file: sample.c
+
+Identifier: include
+Operator: <
+Identifier: stdio
+Identifier: h
+Operator: >
+Keyword: int
+Identifier: main
+// ...more tokens...
+
+Summary:
+Number of identifiers: 29
+Number of keywords: 8
+Number of operators: 11
+Total tokens: 48
+```
+
+### nested_for - Recognizing Nested FOR Loops
+
+This program recognizes and validates nested FOR loops in C language, ensuring they have at least 3 levels of nesting.
+
+**Files:**
+
+- `nested_for.l` - Lexical analyzer for recognizing C tokens in FOR loops
+- `nested_for.y` - Parser for recognizing and validating nested FOR loops
+- `test_for.c` - A sample C file with nested FOR loops for testing
+
+**Compile:**
+
+```bash
+cd nested_for
+yacc -d nested_for.y
+flex nested_for.l
+gcc -o nested_for lex.yy.c y.tab.c -ll
+```
+
+**Run:**
+
+```bash
+./nested_for < test_for.c
+```
+
+**Test Case:**
+
+```c
+for(i=0; i<10; i++) {
+    for(j=0; j<10; j++) {
+        for(k=0; k<10; k++) {
+            sum = sum + i + j + k;
+        }
+    }
+}
+```
+
+**Expected Output:**
+
+```
+Nested FOR Loop Recognizer
+Enter a C code snippet with nested FOR loops (minimum 3 levels).
+Press Ctrl+D (EOF) when done.
+
+Valid nested FOR loop with nesting level: 3 (minimum 3 levels met)
+```
+
+**Features:**
+
+- Recognizes C-style FOR loops with all components (initialization, condition, update, body)
+- Tracks and verifies nesting depth to ensure minimum 3 levels
+- Handles various C expressions within the loop components
+- Provides feedback on the maximum nesting level detected
 
 ### verb - Identifying "To Be" Verbs
 

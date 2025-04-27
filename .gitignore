@@ -1,0 +1,23 @@
+# Generated files by flex/lex
+**/lex.yy.c
+
+# Generated files by yacc/bison
+**/y.tab.c
+**/y.tab.h
+
+# Executable files (binary files without extensions)
+*
+!*/
+!*.*
+
+# MacOS specific files
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Object files
+*.o
